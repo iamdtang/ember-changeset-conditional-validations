@@ -36,11 +36,12 @@ test('if the condition returns true, the validators are invoked and their result
   assert.deepEqual(validations, ['Error message A', true]);
 });
 
-test('the condition is invoked with the changes for each validator', function(assert) {
+test('the condition is invoked with the changes and content for each validator', function(assert) {
   let key = 'name';
   let newValue = 'Yehuda';
   let oldValue = 'YK';
   let changes = {};
+  let content = {};
 
   let validatorA = sinon.stub().returns('Error message A');
   let validatorB = sinon.stub().returns(true);
@@ -48,11 +49,13 @@ test('the condition is invoked with the changes for each validator', function(as
 
   let validators = validateSometimes([validatorA, validatorB], condition);
   validators.map((validator) => {
-    return validator(key, newValue, oldValue, changes);
+    return validator(key, newValue, oldValue, changes, content);
   });
   assert.equal(condition.callCount, 2);
   assert.strictEqual(condition.getCall(0).args[0], changes);
+  assert.strictEqual(condition.getCall(0).args[1], content);
   assert.strictEqual(condition.getCall(1).args[0], changes);
+  assert.strictEqual(condition.getCall(1).args[1], content);
 });
 
 test('each validator is invoked with key, newValue, oldValue, changes, and content', function(assert) {
@@ -64,7 +67,7 @@ test('each validator is invoked with key, newValue, oldValue, changes, and conte
 
   let validatorA = sinon.spy();
   let validatorB = sinon.spy();
-  let condition = sinon.stub().returns(true);  
+  let condition = sinon.stub().returns(true);
   let validators = validateSometimes([validatorA, validatorB], condition);
 
   validators.map((validator) => {

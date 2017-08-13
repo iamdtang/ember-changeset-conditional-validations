@@ -25,13 +25,13 @@ const Validations = {
   creditCardNumber: validateSometimes([
     validatePresence(true),
     validateNumber({ is: 16 })
-  ], function(changes) {
+  ], function(changes, content) {
     return get(changes, 'paymentMethod.isCreditCard')
   })
 };
 ```
 
-`validateSometimes` takes 2 arguments. The first is a list of validators and the second is a callback function which represents the condition. If the condition callback returns `true`, the rules will be added.
+`validateSometimes` takes 2 arguments. The first is a list of validators. The second argument is a callback function which represents the condition. If the condition callback returns `true`, the rules will be added. This callback function will be invoked with the changeset's changes and content.
 
 ```js
 import Changeset from 'ember-changeset';

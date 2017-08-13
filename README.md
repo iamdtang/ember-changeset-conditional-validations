@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/skaterdav85/ember-changeset-conditional-validations.svg?branch=master)](https://travis-ci.org/skaterdav85/ember-changeset-conditional-validations)
+
 # ember-changeset-conditional-validations
 
 An extra validator for conditional validations with [`ember-changeset-validations`](https://github.com/DockYard/ember-changeset-validations).

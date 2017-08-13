@@ -1,6 +1,6 @@
 {
   "name": "ember-changeset-conditional-validations",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Conditional validations for ember-changeset-validations",
   "keywords": [
     "ember-addon",
@@ -11,12 +11,14 @@
     "conditional validations"
   ],
   "license": "MIT",
-  "author": "",
+  "author": "David Tang <david@thejsguy.com>",
   "directories": {
     "doc": "doc",
     "test": "tests"
   },
-  "repository": "",
+  "repository": "https://github.com/skaterdav85/ember-changeset-conditional-validations",
+  "bugs": "https://github.com/skaterdav85/ember-changeset-conditional-validations/issues",
+  "homepage": "https://github.com/skaterdav85/ember-changeset-conditional-validations",
   "scripts": {
     "build": "ember build",
     "start": "ember server",

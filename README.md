@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/skaterdav85/ember-changeset-conditional-validations.svg?branch=master)](https://travis-ci.org/skaterdav85/ember-changeset-conditional-validations)
+[![Build Status](https://travis-ci.org/skaterdav85/ember-changeset-conditional-validations.svg?branch=master)](https://travis-ci.org/skaterdav85/ember-changeset-conditional-validations) [![Ember Observer Score](https://emberobserver.com/badges/ember-changeset-conditional-validations.svg)](https://emberobserver.com/addons/ember-changeset-conditional-validations)
 
 # ember-changeset-conditional-validations
 

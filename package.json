@@ -26,17 +26,17 @@
     "test-with-coverage": "COVERAGE=true ember test -s"
   },
   "dependencies": {
-    "ember-cli-babel": "^6.3.0"
+    "ember-cli-babel": "^6.6.0"
   },
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.5",
     "ember-ajax": "^3.0.0",
     "ember-changeset": "^1.3.0",
     "ember-changeset-validations": "^1.2.8",
-    "ember-cli": "~2.15.1",
+    "ember-cli": "~2.16.2",
     "ember-cli-code-coverage": "^0.4.2",
     "ember-cli-dependency-checker": "^2.0.0",
-    "ember-cli-eslint": "^3.0.0",
+    "ember-cli-eslint": "^4.0.0",
     "ember-cli-htmlbars": "^2.0.1",
     "ember-cli-htmlbars-inline-precompile": "^1.0.0",
     "ember-cli-inject-live-reload": "^1.4.1",
@@ -49,7 +49,7 @@
     "ember-load-initializers": "^1.0.0",
     "ember-resolver": "^4.0.0",
     "ember-sinon": "^0.7.0",
-    "ember-source": "~2.15.0",
+    "ember-source": "~2.16.0",
     "loader.js": "^4.2.3"
   },
   "engines": {

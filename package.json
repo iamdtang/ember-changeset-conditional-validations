@@ -22,7 +22,7 @@
   "scripts": {
     "build": "ember build",
     "start": "ember server",
-    "test": "ember try:each",
+    "test": "ember doorkeeper",
     "test-with-coverage": "COVERAGE=true ember test -s"
   },
   "dependencies": {
@@ -36,6 +36,7 @@
     "ember-cli": "~2.16.2",
     "ember-cli-code-coverage": "^0.4.2",
     "ember-cli-dependency-checker": "^2.0.0",
+    "ember-cli-doorkeeper": "^0.1.4",
     "ember-cli-eslint": "^4.0.0",
     "ember-cli-htmlbars": "^2.0.1",
     "ember-cli-htmlbars-inline-precompile": "^1.0.0",

@@ -2050,9 +2050,9 @@ ember-cli-dependency-checker@^2.0.0:
     is-git-url "^1.0.0"
     semver "^5.3.0"
 
-"ember-cli-doorkeeper@git+https://github.com/skaterdav85/ember-cli-doorkeeper.git#master":
-  version "0.0.6"
-  resolved "git+https://github.com/skaterdav85/ember-cli-doorkeeper.git#2e7ceac309f1ecf3a5a54bc9c8513764029552cf"
+ember-cli-doorkeeper@^0.1.4:
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/ember-cli-doorkeeper/-/ember-cli-doorkeeper-0.1.4.tgz#2ccbadc0d2a11174f792f7493926b84dbeac9231"
   dependencies:
     ember-cli-babel "^6.6.0"
     shelljs "^0.7.8"

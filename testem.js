@@ -1,4 +1,4 @@
-const browserArgs = process.env.CONTINUOUS_INTEGRATION ? ['--headless', '--disable-gpu', '--remote-debugging-port=0'] : [];
+const browserArgs = process.env.TRAVIS ? ['--headless', '--disable-gpu', '--remote-debugging-port=0'] : [];
 
 module.exports = {
   test_page: 'tests/index.html?hidepassed',

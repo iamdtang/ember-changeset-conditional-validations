@@ -1,3 +1,22 @@
-<h2 id="title">Welcome to Ember</h2>
-
-{{outlet}}
+Valid?: {{changeset.isValid}}
+<br>
+Payment Method*:
+{{changeset.paymentMethod}}
+<br>
+Paypal: <input
+  type="radio"
+  value="paypal"
+  name="payment-method"
+  onclick={{action (mut changeset.paymentMethod) value="target.value"}}>
+Credit Card: <input
+  type="radio"
+  value="credit-card"
+  name="payment-method"
+  onclick={{action (mut changeset.paymentMethod) value="target.value"}}>
+<br>
+Credit Card Number: {{changeset.creditCardNumber}}
+<br>
+<input
+  type="number"
+  value={{changeset.creditCardNumber}}
+  oninput={{action (mut changeset.creditCardNumber) value="target.value"}}>

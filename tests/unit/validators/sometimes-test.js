@@ -95,7 +95,7 @@ test('this.get() to access the changes', function(assert) {
     creditCardNumber: validateSometimes([
       validatePresence(true),
       validateLength({ is: 16 })
-    ], function(changes, content) {
+    ], function() {
       return this.get('paymentMethod') === 'credit-card';
     })
   };
@@ -121,7 +121,7 @@ test('this.get() to access the content', function(assert) {
     creditCardNumber: validateSometimes([
       validatePresence(true),
       validateLength({ is: 16 })
-    ], function(changes, content) {
+    ], function() {
       return this.get('paymentMethod') === 'credit-card';
     })
   };

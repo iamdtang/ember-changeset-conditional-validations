@@ -51,7 +51,7 @@ test('the condition is invoked with the changes and content for each validator',
   let condition = sinon.spy();
 
   let validators = validateSometimes([validatorA, validatorB], condition);
-  validators.map((validator) => {
+  validators.forEach((validator) => {
     return validator(key, newValue, oldValue, changes, content);
   });
   assert.equal(condition.callCount, 2);
@@ -73,7 +73,7 @@ test('each validator is invoked with key, newValue, oldValue, changes, and conte
   let condition = sinon.stub().returns(true);
   let validators = validateSometimes([validatorA, validatorB], condition);
 
-  validators.map((validator) => {
+  validators.forEach((validator) => {
     return validator(key, newValue, oldValue, changes, content);
   });
 

@@ -1,7 +1,10 @@
 import { module, test } from 'qunit';
+import { validatePresence, validateLength } from 'ember-changeset-validations/validators';
 import validateSometimes from 'ember-changeset-conditional-validations/validators/sometimes';
+import lookupValidator from 'ember-changeset-validations';
 import sinon from 'sinon';
 import isFunction from './../../helpers/is-function';
+import Changeset from 'ember-changeset';
 
 module('Unit | Validator | sometimes');
 
@@ -84,4 +87,53 @@ test('each validator is invoked with key, newValue, oldValue, changes, and conte
   assert.strictEqual(validatorB.firstCall.args[2], oldValue);
   assert.strictEqual(validatorB.firstCall.args[3], changes);
   assert.strictEqual(validatorB.firstCall.args[4], content);
+});
+
+test('this.get() to access the changes', function(assert) {
+  const Validations = {
+    paymentMethod: validatePresence(true),
+    creditCardNumber: validateSometimes([
+      validatePresence(true),
+      validateLength({ is: 16 })
+    ], function(changes, content) {
+      return this.get('paymentMethod') === 'credit-card';
+    })
+  };
+
+  let settings = {};
+  let changeset = new Changeset(settings, lookupValidator(Validations), Validations);
+  changeset.set('paymentMethod', 'credit-card');
+  changeset.set('creditCardNumber', '12');
+  changeset.validate();
+  assert.notOk(changeset.get('isValid'), 'invalid');
+  changeset.set('creditCardNumber', '1234567890123456');
+  changeset.validate();
+  assert.ok(changeset.get('isValid'), 'valid');
+  changeset.set('creditCardNumber', '');
+  changeset.set('paymentMethod', 'paypal');
+  changeset.validate();
+  assert.ok(changeset.get('isValid'), 'still valid');
+});
+
+test('this.get() to access the content', function(assert) {
+  const Validations = {
+    paymentMethod: validatePresence(true),
+    creditCardNumber: validateSometimes([
+      validatePresence(true),
+      validateLength({ is: 16 })
+    ], function(changes, content) {
+      return this.get('paymentMethod') === 'credit-card';
+    })
+  };
+
+  let settings = {
+    paymentMethod: 'credit-card'
+  };
+  let changeset = new Changeset(settings, lookupValidator(Validations), Validations);
+  changeset.set('creditCardNumber', '12');
+  changeset.validate();
+  assert.notOk(changeset.get('isValid'), 'invalid');
+  changeset.set('creditCardNumber', '1234567890123456');
+  changeset.save();
+  assert.ok(changeset.get('isValid'), 'valid');
 });

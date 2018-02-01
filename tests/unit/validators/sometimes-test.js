@@ -137,3 +137,46 @@ test('this.get() to access the content', function(assert) {
   changeset.save();
   assert.ok(changeset.get('isValid'), 'valid');
 });
+
+test('this.get() has the same semantics as Ember.get when accessing content', function(assert) {
+  const Validations = {
+    paymentMethod: validatePresence(true),
+    creditCardNumber: validateSometimes([
+      validatePresence(true),
+      validateLength({ is: 16 })
+    ], function() {
+      return this.get('paymentMethod.isCreditCard');
+    })
+  };
+
+  let settings = {
+    paymentMethod: {
+      isCreditCard: true
+    },
+    creditCardNumber: 12
+  };
+  let changeset = new Changeset(settings, lookupValidator(Validations), Validations);
+  changeset.validate();
+  assert.notOk(changeset.get('isValid'));
+});
+
+test('this.get() has the same semantics as Ember.get when accessing changes', function(assert) {
+  const Validations = {
+    paymentMethod: validatePresence(true),
+    creditCardNumber: validateSometimes([
+      validatePresence(true),
+      validateLength({ is: 16 })
+    ], function() {
+      return this.get('paymentMethod.isCreditCard');
+    })
+  };
+
+  let settings = {};
+  let changeset = new Changeset(settings, lookupValidator(Validations), Validations);
+  changeset.set('paymentMethod', {
+    isCreditCard: true
+  });
+  changeset.set('creditCardNumber', '12');
+  changeset.validate();
+  assert.notOk(changeset.get('isValid'));
+});

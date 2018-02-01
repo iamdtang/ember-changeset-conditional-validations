@@ -16,26 +16,25 @@ Let's say you want to validate a user's settings. Only if the payment method is 
 
 ```js
 import Ember from 'ember';
-import { validatePresence, validateNumber } from 'ember-changeset-validations/validators';
+import { validatePresence, validateLength } from 'ember-changeset-validations/validators';
 import validateSometimes from 'ember-changeset-conditional-validations/validators/sometimes';
 
-const { get } = Ember;
-
-const Validations = {
+export default {
   creditCardNumber: validateSometimes([
     validatePresence(true),
-    validateNumber({ is: 16 })
+    validateLength({ is: 16 })
   ], function(changes, content) {
-    return get(changes, 'paymentMethod.isCreditCard') || get(content, 'paymentMethod.isCreditCard');
+    return this.get('paymentMethod.isCreditCard');
   })
 };
 ```
 
-`validateSometimes` takes 2 arguments. The first is a list of validators you want applied to the attribute. The second argument is a callback function which represents the condition. If the condition callback returns `true`, the rules will be added. This callback function will be invoked with the changeset's changes and content.
+`validateSometimes` takes 2 arguments. The first is a list of validators you want applied to the attribute. The second argument is a callback function which represents the condition. If the condition callback returns `true`, the rules will be added. This callback function will be invoked with the changeset's changes and content. The callback will also be invoked with its `this` value set to an object that has a `get()` method for accessing a property. `this.get(property)` first proxies to the changes and then the underlying content.
 
 ```js
 import Changeset from 'ember-changeset';
 import lookupValidator from 'ember-changeset-validations';
+import Validations from './../validations/settings';
 
 let settings = {};
 let changeset = new Changeset(settings, lookupValidator(Validations), Validations);

@@ -15,7 +15,6 @@ ember install ember-changeset-conditional-validations
 Let's say you want to validate a user's settings. Only if the payment method is a credit card should the credit card number validations be applied.
 
 ```js
-import Ember from 'ember';
 import { validatePresence, validateLength } from 'ember-changeset-validations/validators';
 import validateSometimes from 'ember-changeset-conditional-validations/validators/sometimes';
 

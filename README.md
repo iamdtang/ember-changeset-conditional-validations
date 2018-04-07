@@ -59,6 +59,24 @@ changeset.validate();
 console.log(changeset.get('isValid')); // true
 ```
 
+You can also have a combination of validations that will always run and conditional validations. For example, say you wanted to validation that a property is a number, but conditionally validate that the number is greater than 5. You could do something like the following:
+
+```js
+import { validateNumber } from 'ember-changeset-validations/validators';
+import validateSometimes from 'ember-changeset-conditional-validations/validators/sometimes';
+
+export default {
+  someProperty: [
+    validateNumber({ integer: true }),
+    ...validateSometimes([
+      validateNumber({ gt: 5 })
+    ], function() {
+      // condition
+    })
+  ]
+};
+```
+
 ## Installation
 
 * `git clone <repository-url>` this repository

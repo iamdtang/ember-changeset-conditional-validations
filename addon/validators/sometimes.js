@@ -5,7 +5,9 @@ export default function validateSometimes(validators, condition) {
     return function(key, newValue, oldValue, changes, content) {
       let thisValue = {
         get(property) {
-          return get(changes, property) || get(content, property);
+          return get(changes, property) != null
+            ? get(changes, property)
+            : get(content, property);
         }
       };
 

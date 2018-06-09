@@ -192,13 +192,13 @@ test('this.get() works with boolean values', function(assert) {
     })
   };
 
-  let settings = {};
+  let settings = {
+    hasCreditCard: true
+  };
   let changeset = new Changeset(settings, lookupValidator(Validations), Validations);
-  changeset.set('hasCreditCard', true);
   changeset.set('creditCardNumber', '1234567890123456');
   changeset.validate();
   assert.ok(changeset.get('isValid'), 'valid');
-  changeset.save();
   changeset.set('hasCreditCard', false);
   changeset.set('creditCardNumber', '12');
   changeset.validate();

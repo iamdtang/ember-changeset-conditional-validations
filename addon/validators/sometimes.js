@@ -5,7 +5,15 @@ export default function validateSometimes(validators, condition) {
     return function(key, newValue, oldValue, changes, content) {
       let thisValue = {
         get(property) {
-          return get(changes, property) || get(content, property);
+          if (property.includes('.')) {
+            return get(changes, property) || get(content, property);
+          }
+
+          if (changes.hasOwnProperty(property)) {
+            return get(changes, property);
+          } else {
+            return get(content, property);
+          }
         }
       };
 

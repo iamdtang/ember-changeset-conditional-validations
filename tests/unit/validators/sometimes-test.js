@@ -9,33 +9,35 @@ import Changeset from 'ember-changeset';
 module('Unit | Validator | sometimes');
 
 test('an array of validators is returned', function(assert) {
-  let validatorA = sinon.stub();
-  let validatorB = sinon.stub();
-  let condition = sinon.stub();
+  let validatorA = function() {};
+  let validatorB = function() {};
+  let condition = function() {};
+
   let validators = validateSometimes([validatorA, validatorB], condition);
+
   assert.equal(validators.length, 2);
   assert.ok(validators.every(isFunction));
 });
 
 test('if the condition returns false, the validators return true', function(assert) {
-  let validatorA = sinon.stub();
-  let validatorB = sinon.stub();
-  let condition = sinon.stub().returns(false);
+  let validatorA = function() {};
+  let validatorB = function() {};
+  let condition = () => false;
+
   let validators = validateSometimes([validatorA, validatorB], condition);
-  let validations = validators.map((validator) => {
-    return validator();
-  });
+  let validations = validators.map(validator => validator());
+
   assert.deepEqual(validations, [true, true]);
 });
 
 test('if the condition returns true, the validators are invoked and their result is returned', function(assert) {
-  let validatorA = sinon.stub().returns('Error message A');
-  let validatorB = sinon.stub().returns(true);
-  let condition = sinon.stub().returns(true);
+  let validatorA = () => 'Error message A';
+  let validatorB = () => true;
+  let condition = () => true;
+
   let validators = validateSometimes([validatorA, validatorB], condition);
-  let validations = validators.map((validator) => {
-    return validator();
-  });
+  let validations = validators.map(validator => validator());
+
   assert.deepEqual(validations, ['Error message A', true]);
 });
 
@@ -46,14 +48,15 @@ test('the condition is invoked with the changes and content for each validator',
   let changes = {};
   let content = {};
 
-  let validatorA = sinon.stub().returns('Error message A');
-  let validatorB = sinon.stub().returns(true);
+  let validatorA = () => 'Error message A';
+  let validatorB = () => true;
   let condition = sinon.spy();
 
   let validators = validateSometimes([validatorA, validatorB], condition);
   validators.forEach((validator) => {
     return validator(key, newValue, oldValue, changes, content);
   });
+
   assert.equal(condition.callCount, 2);
   assert.strictEqual(condition.getCall(0).args[0], changes);
   assert.strictEqual(condition.getCall(0).args[1], content);
@@ -70,9 +73,9 @@ test('each validator is invoked with key, newValue, oldValue, changes, and conte
 
   let validatorA = sinon.spy();
   let validatorB = sinon.spy();
-  let condition = sinon.stub().returns(true);
-  let validators = validateSometimes([validatorA, validatorB], condition);
+  let condition = () => true;
 
+  let validators = validateSometimes([validatorA, validatorB], condition);
   validators.forEach((validator) => {
     return validator(key, newValue, oldValue, changes, content);
   });
@@ -89,8 +92,8 @@ test('each validator is invoked with key, newValue, oldValue, changes, and conte
   assert.strictEqual(validatorB.firstCall.args[4], content);
 });
 
-test('this.get() to access the changes', function(assert) {
-  const Validations = {
+test('this.get() when accessing the changes', function(assert) {
+  let Validations = {
     paymentMethod: validatePresence(true),
     creditCardNumber: validateSometimes([
       validatePresence(true),
@@ -100,23 +103,21 @@ test('this.get() to access the changes', function(assert) {
     })
   };
 
-  let settings = {};
-  let changeset = new Changeset(settings, lookupValidator(Validations), Validations);
+  let changeset = new Changeset({}, lookupValidator(Validations), Validations);
   changeset.set('paymentMethod', 'credit-card');
   changeset.set('creditCardNumber', '12');
   changeset.validate();
+
   assert.notOk(changeset.get('isValid'), 'invalid');
+
   changeset.set('creditCardNumber', '1234567890123456');
   changeset.validate();
+
   assert.ok(changeset.get('isValid'), 'valid');
-  changeset.set('creditCardNumber', '');
-  changeset.set('paymentMethod', 'paypal');
-  changeset.validate();
-  assert.ok(changeset.get('isValid'), 'still valid');
 });
 
-test('this.get() to access the content', function(assert) {
-  const Validations = {
+test('this.get() when accessing the content', function(assert) {
+  let Validations = {
     paymentMethod: validatePresence(true),
     creditCardNumber: validateSometimes([
       validatePresence(true),
@@ -126,20 +127,22 @@ test('this.get() to access the content', function(assert) {
     })
   };
 
-  let settings = {
+  let changeset = new Changeset({
     paymentMethod: 'credit-card'
-  };
-  let changeset = new Changeset(settings, lookupValidator(Validations), Validations);
+  }, lookupValidator(Validations), Validations);
+
   changeset.set('creditCardNumber', '12');
   changeset.validate();
+
   assert.notOk(changeset.get('isValid'), 'invalid');
+
   changeset.set('creditCardNumber', '1234567890123456');
-  changeset.save();
+
   assert.ok(changeset.get('isValid'), 'valid');
 });
 
-test('this.get() has the same semantics as Ember.get when accessing content', function(assert) {
-  const Validations = {
+test('this.get() when accessing content with a property path', function(assert) {
+  let Validations = {
     paymentMethod: validatePresence(true),
     creditCardNumber: validateSometimes([
       validatePresence(true),
@@ -149,19 +152,19 @@ test('this.get() has the same semantics as Ember.get when accessing content', fu
     })
   };
 
-  let settings = {
+  let changeset = new Changeset({
     paymentMethod: {
       isCreditCard: true
     },
     creditCardNumber: 12
-  };
-  let changeset = new Changeset(settings, lookupValidator(Validations), Validations);
+  }, lookupValidator(Validations), Validations);
   changeset.validate();
+
   assert.notOk(changeset.get('isValid'));
 });
 
-test('this.get() has the same semantics as Ember.get when accessing changes', function(assert) {
-  const Validations = {
+test('this.get() when accessing changes with a property path', function(assert) {
+  let Validations = {
     paymentMethod: validatePresence(true),
     creditCardNumber: validateSometimes([
       validatePresence(true),
@@ -171,18 +174,18 @@ test('this.get() has the same semantics as Ember.get when accessing changes', fu
     })
   };
 
-  let settings = {};
-  let changeset = new Changeset(settings, lookupValidator(Validations), Validations);
+  let changeset = new Changeset({}, lookupValidator(Validations), Validations);
   changeset.set('paymentMethod', {
     isCreditCard: true
   });
   changeset.set('creditCardNumber', '12');
   changeset.validate();
+
   assert.notOk(changeset.get('isValid'));
 });
 
-test('this.get() works with boolean values', function(assert) {
-  const Validations = {
+test('this.get() when setting the key to false', function(assert) {
+  let Validations = {
     hasCreditCard: validatePresence(true),
     creditCardNumber: validateSometimes([
       validatePresence(true),
@@ -192,18 +195,13 @@ test('this.get() works with boolean values', function(assert) {
     })
   };
 
-  let settings = {
+  let changeset = new Changeset({
     hasCreditCard: true
-  };
-  let changeset = new Changeset(settings, lookupValidator(Validations), Validations);
-  changeset.set('creditCardNumber', '1234567890123456');
-  changeset.validate();
-  assert.ok(changeset.get('isValid'), 'valid');
+  }, lookupValidator(Validations), Validations);
+
   changeset.set('hasCreditCard', false);
   changeset.set('creditCardNumber', '12');
   changeset.validate();
+
   assert.ok(changeset.get('isValid'), 'valid');
-  changeset.set('hasCreditCard', true);
-  changeset.validate();
-  assert.notOk(changeset.get('isValid'), 'invalid');
 });

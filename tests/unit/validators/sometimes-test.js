@@ -180,3 +180,30 @@ test('this.get() has the same semantics as Ember.get when accessing changes', fu
   changeset.validate();
   assert.notOk(changeset.get('isValid'));
 });
+
+test('this.get() works with boolean values', function(assert) {
+  const Validations = {
+    hasCreditCard: validatePresence(true),
+    creditCardNumber: validateSometimes([
+      validatePresence(true),
+      validateLength({ is: 16 })
+    ], function () {
+      return this.get('hasCreditCard');
+    })
+  };
+
+  let settings = {
+    hasCreditCard: true
+  };
+  let changeset = new Changeset(settings, lookupValidator(Validations), Validations);
+  changeset.set('creditCardNumber', '1234567890123456');
+  changeset.validate();
+  assert.ok(changeset.get('isValid'), 'valid');
+  changeset.set('hasCreditCard', false);
+  changeset.set('creditCardNumber', '12');
+  changeset.validate();
+  assert.ok(changeset.get('isValid'), 'valid');
+  changeset.set('hasCreditCard', true);
+  changeset.validate();
+  assert.notOk(changeset.get('isValid'), 'invalid');
+});

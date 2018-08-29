@@ -28,7 +28,7 @@ export default {
 };
 ```
 
-`validateSometimes()` takes 2 arguments. The first is a list of validators you want applied to the attribute. The second argument is a callback function which represents the condition. If the condition callback returns `true`, the rules will be added. This callback function will be invoked with the changeset's changes and content. The callback will also be invoked with its `this` value set to an object that has a `get()` method for accessing a property. `this.get(property)` first proxies to the changes and then the underlying content, and has the same semantics as `Ember.get()`.
+`validateSometimes()` takes 2 arguments. The first is a validator or list of validators you want applied to the attribute. The second argument is a callback function which represents the condition. If the condition callback returns `true`, the rules will be added. This callback function will be invoked with the changeset's changes and content. The callback will also be invoked with its `this` value set to an object that has a `get()` method for accessing a property. `this.get(property)` first proxies to the changes and then the underlying content, and has the same semantics as `Ember.get()`.
 
 ```js
 import Changeset from 'ember-changeset';

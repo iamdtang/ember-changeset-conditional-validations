@@ -7,7 +7,7 @@ import isFunction from './../../helpers/is-function';
 import Changeset from 'ember-changeset';
 
 module('Unit | Validator | sometimes', function() {
-  test('an array of validators is returned', function(assert) {
+  test('an array of validators is returned when given an array', function(assert) {
     let validatorA = function() {};
     let validatorB = function() {};
     let condition = function() {};
@@ -16,6 +16,15 @@ module('Unit | Validator | sometimes', function() {
 
     assert.equal(validators.length, 2);
     assert.ok(validators.every(isFunction));
+  });
+
+  test('an validator function is returned if given a validator', function(assert) {
+    let validatorA = function() {};
+    let condition = function() {};
+
+    let validator = validateSometimes(validatorA, condition);
+
+    assert.ok(isFunction(validator));
   });
 
   test('if the condition returns false, the validators return true', function(assert) {
@@ -89,6 +98,29 @@ module('Unit | Validator | sometimes', function() {
     assert.strictEqual(validatorB.firstCall.args[2], oldValue);
     assert.strictEqual(validatorB.firstCall.args[3], changes);
     assert.strictEqual(validatorB.firstCall.args[4], content);
+  });
+
+  test('single validator is invoked with key, newValue, oldValue, changes, and content', function(assert) {
+    let key = 'name';
+    let newValue = 'Yehuda';
+    let oldValue = 'YK';
+    let changes = {};
+    let content = {};
+
+    let validatorA = sinon.spy();
+    let condition = () => true;
+
+    let validator = validateSometimes(validatorA, condition);
+
+    assert.ok(isFunction(validator));
+
+    validator(key, newValue, oldValue, changes, content);
+
+    assert.strictEqual(validatorA.firstCall.args[0], key);
+    assert.strictEqual(validatorA.firstCall.args[1], newValue);
+    assert.strictEqual(validatorA.firstCall.args[2], oldValue);
+    assert.strictEqual(validatorA.firstCall.args[3], changes);
+    assert.strictEqual(validatorA.firstCall.args[4], content);
   });
 
   test('this.get() when accessing the changes', function(assert) {

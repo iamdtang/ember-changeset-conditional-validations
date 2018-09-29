@@ -1,9 +1,15 @@
 import { get } from '@ember/object';
 
 export default function validateSometimes(validator, condition) {
-  return Array.isArray(validator) ? validator.map(mapValidator) : mapValidator(validator)
+  if (Array.isArray(arguments[0])) {
+    let validators = arguments[0];
+    return validators.map(guardValidatorWithCondition);
+  } else {
+    let validator = arguments[0];
+    return guardValidatorWithCondition(validator);
+  }
 
-  function mapValidator(validator) {
+  function guardValidatorWithCondition(validator) {
     return function(key, newValue, oldValue, changes, content) {
       let thisValue = {
         get(property) {

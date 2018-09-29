@@ -18,7 +18,7 @@ module('Unit | Validator | sometimes', function() {
     assert.ok(validators.every(isFunction));
   });
 
-  test('an validator function is returned if given a validator', function(assert) {
+  test('a validator function is returned if given a validator', function(assert) {
     let validatorA = function() {};
     let condition = function() {};
 

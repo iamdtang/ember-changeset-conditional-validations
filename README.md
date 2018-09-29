@@ -10,7 +10,7 @@ An extra validator for conditional validations with [`ember-changeset-validation
 ember install ember-changeset-conditional-validations
 ```
 
-## Usage
+## Basic Usage
 
 Let's say you want to validate a user's settings. Only if the payment method is a credit card should the credit card number validations be applied.
 
@@ -59,7 +59,9 @@ changeset.validate();
 console.log(changeset.get('isValid')); // true
 ```
 
-You can also have a combination of validations that will always run and conditional validations. For example, say you wanted to validation that a property is a number, but conditionally validate that the number is greater than 5. You could do something like the following:
+### Combining Validations with Conditional Validations
+
+You can also have a combination of validations that will always run and conditional validations. For example, say you wanted to validate that a property is a number, but conditionally validate that the number is greater than 5. You could do something like the following:
 
 ```js
 import { validateNumber } from 'ember-changeset-validations/validators';

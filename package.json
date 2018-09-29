@@ -1,6 +1,6 @@
 {
   "name": "ember-changeset-conditional-validations",
-  "version": "0.4.2",
+  "version": "0.5.0",
   "description": "Conditional validations for ember-changeset-validations",
   "keywords": [
     "ember-addon",

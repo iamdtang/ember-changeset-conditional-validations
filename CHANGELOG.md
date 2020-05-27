@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+- [Fix .get() for sometimes condition with falsy values](https://github.com/skaterdav85/ember-changeset-conditional-validations/pull/16)
+- Upgrades `ember-sinon`
+
+## 0.6.0
+
 ## 0.4.2
 
 - Fixes https://github.com/skaterdav85/ember-changeset-conditional-validations/issues/10

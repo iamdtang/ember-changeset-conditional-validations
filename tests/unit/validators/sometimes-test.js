@@ -215,7 +215,7 @@ module('Unit | Validator | sometimes', function() {
     assert.notOk(changeset.get('isValid'));
   });
 
-  test('this.get() when setting the key to false', function(assert) {
+  test('this.get() when setting the value to false', function(assert) {
     let Validations = {
       hasCreditCard: validatePresence(true),
       creditCardNumber: validateSometimes([
@@ -235,5 +235,102 @@ module('Unit | Validator | sometimes', function() {
     changeset.validate();
 
     assert.ok(changeset.get('isValid'), 'valid');
+  });
+
+  test('this.get() when setting the value to null', function(assert) {
+    let Validations = {
+      creditCardNumber: validateSometimes([
+        validatePresence(true),
+        validateLength({ is: 16 })
+      ], function () {
+        return this.get('creditCardDetails');
+      })
+    };
+
+    let changeset = new Changeset({
+      creditCardDetails: {
+        number: '1234567890123456'
+      }
+    }, lookupValidator(Validations), Validations);
+
+    changeset.set('creditCardDetails', null);
+    changeset.set('creditCardNumber', '12');
+    changeset.validate();
+
+    assert.ok(changeset.get('isValid'), 'valid');
+  });
+
+  test('this.get() when setting the value to undefined', function(assert) {
+    let Validations = {
+      creditCardNumber: validateSometimes([
+        validatePresence(true),
+        validateLength({ is: 16 })
+      ], function () {
+        return this.get('creditCardDetails');
+      })
+    };
+
+    let changeset = new Changeset({
+      creditCardDetails: {
+        number: '1234567890123456'
+      }
+    }, lookupValidator(Validations), Validations);
+
+    changeset.set('creditCardDetails', undefined);
+    changeset.set('creditCardNumber', '12');
+    changeset.validate();
+
+    assert.ok(changeset.get('isValid'), 'valid');
+  });
+
+  test('this.get() when setting a property path to falsy values', function(assert) {
+    let Validations = {
+      creditCardNumber: validateSometimes([
+        validatePresence(true),
+        validateLength({ is: 16 })
+      ], function() {
+        return this.get('paymentMethod.isCreditCard');
+      })
+    };
+
+    let changeset = new Changeset({
+      paymentDetails: {
+        methodInfo: {
+          isCreditCard: true
+        }
+      },
+      creditCardNumber: 12
+    }, lookupValidator(Validations), Validations);
+
+    changeset.validate();
+    assert.ok(changeset.get('isValid'));
+
+    changeset.set('paymentDetails.methodInfo.isCreditCard', false);
+    changeset.validate();
+    assert.ok(changeset.get('isValid'));
+
+    changeset.set('paymentDetails.methodInfo.isCreditCard', null);
+    changeset.validate();
+    assert.ok(changeset.get('isValid'));
+
+    changeset.set('paymentDetails.methodInfo.isCreditCard', undefined);
+    changeset.validate();
+    assert.ok(changeset.get('isValid'));
+
+    changeset.set('paymentDetails.methodInfo', null);
+    changeset.validate();
+    assert.ok(changeset.get('isValid'));
+
+    changeset.set('paymentDetails.methodInfo', undefined);
+    changeset.validate();
+    assert.ok(changeset.get('isValid'));
+
+    changeset.set('paymentDetails', null);
+    changeset.validate();
+    assert.ok(changeset.get('isValid'));
+
+    changeset.set('paymentDetails', undefined);
+    changeset.validate();
+    assert.ok(changeset.get('isValid'));
   });
 });

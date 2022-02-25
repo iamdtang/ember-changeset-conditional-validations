@@ -28,7 +28,7 @@
     "test-with-coverage": "COVERAGE=true ember test -s"
   },
   "dependencies": {
-    "ember-cli-babel": "^6.16.0"
+    "ember-cli-babel": "^7.26.6"
   },
   "devDependencies": {
     "broccoli-asset-rev": "^2.7.0",

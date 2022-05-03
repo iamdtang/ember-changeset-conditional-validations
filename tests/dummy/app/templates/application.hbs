@@ -1,22 +1,23 @@
-Valid?: {{changeset.isValid}}
+Valid?: {{this.changeset.isValid}}
 <br>
 Payment Method*:
-{{changeset.paymentMethod}}
+{{this.changeset.paymentMethod}}
 <br>
 Paypal: <input
   type="radio"
   value="paypal"
   name="payment-method"
-  onclick={{action (mut changeset.paymentMethod) value="target.value"}}>
+  {{on 'click' (fn (mut this.changeset.paymentMethod) "paypal")}}>
 Credit Card: <input
   type="radio"
   value="credit-card"
   name="payment-method"
-  onclick={{action (mut changeset.paymentMethod) value="target.value"}}>
+  {{on 'click' (fn (mut this.changeset.paymentMethod) "credit-card")}}>
 <br>
-Credit Card Number: {{changeset.creditCardNumber}}
+Credit Card Number: {{this.changeset.creditCardNumber}}
 <br>
 <input
   type="number"
-  value={{changeset.creditCardNumber}}
-  oninput={{action (mut changeset.creditCardNumber) value="target.value"}}>
+  value={{this.changeset.creditCardNumber}}
+  {{on 'input' this.updateCreditCardNumber}}
+>

@@ -10,7 +10,7 @@ export default function validateSometimes(validator, condition) {
   }
 
   function guardValidatorWithCondition(validator) {
-    return function(key, newValue, oldValue, changes, content) {
+    return function (key, newValue, oldValue, changes, content) {
       let thisValue = {
         get(property) {
           if (property.includes('.')) {
@@ -38,7 +38,7 @@ export default function validateSometimes(validator, condition) {
           } else {
             return get(content, property);
           }
-        }
+        },
       };
 
       if (condition.call(thisValue, changes, content)) {

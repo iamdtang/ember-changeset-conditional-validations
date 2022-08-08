@@ -10,7 +10,7 @@ export default function validateSometimes(validator, condition) {
   }
 
   function guardValidatorWithCondition(validator) {
-    return function(key, newValue, oldValue, changes, content) {
+    return function (key, newValue, oldValue, changes, content) {
       let thisValue = {
         get(property) {
           if (property.includes('.')) {
@@ -26,19 +26,19 @@ export default function validateSometimes(validator, condition) {
             let objPath = pathSegments.join('.');
 
             let obj = get(changes, objPath);
-            if (obj && obj.hasOwnProperty && obj.hasOwnProperty(propName)) {
+            if (obj && Object.prototype.hasOwnProperty.call(obj, propName)) {
               return changesValue;
             }
 
             return get(content, property);
           }
 
-          if (changes.hasOwnProperty(property)) {
+          if (Object.prototype.hasOwnProperty.call(changes, property)) {
             return get(changes, property);
           } else {
             return get(content, property);
           }
-        }
+        },
       };
 
       if (condition.call(thisValue, changes, content)) {
